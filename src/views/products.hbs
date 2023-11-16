@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Productos</title>
+    
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+    <ul>
+        {{#each products}}
+            <li>{{this.name}} - Precio: {{this.price}} - <a href="/products/{{this.id}}">Detalles</a></li>
+        {{/each}}
+    </ul>
+
+    
+</body>

@@ -10,12 +10,14 @@ mongoose.connect(MONGO_URI, {
   useUnifiedTopology: true,
 });
 
-mongoose.connection.on('connected', () => {
-  console.log('Conectados a MongoDB Atlas');
+const db = mongoose.connection;
+
+db.on('error', (err) => {
+  console.error('Error de conexión a MongoDB:', err);
 });
 
-mongoose.connection.on('error', (err) => {
-  console.error('Error de conexión a MongoDB:', err);
+db.once('open', () => {
+  console.log('Conectado a MongoDB Atlas');
 });
 
 export default mongoose;
