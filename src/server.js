@@ -1,18 +1,39 @@
-import express from "express";
-import productRouter from './routes/product.js';
-import cartRouter from './routes/cart.js';
+app.get('/api/productos', async (req, res) => {
+    const { limit = 10, page = 1, sort, query } = req.query;
 
-const PORT = 3026;
-const app = express();
+    const options = {
+        limit: parseInt(limit),
+        page: parseInt(page),
+        sort,
+        query,
+    };
 
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+    try {
+        const products = await productoDao.getAll(options);
+        const totalProducts = await productoDao.count(query);
 
-app.use('/api/productos', productRouter);
-app.use('/api/carrito', cartRouter);
+        const totalPages = Math.ceil(totalProducts / limit);
+        const hasNextPage = page < totalPages;
+        const hasPrevPage = page > 1;
 
-const server = app.listen(PORT, () => {
-    console.log(` >>>>> 🚀 Server started at http://localhost:${PORT}`)
-    })
-    
-server.on('error', (err) => console.log(err));
+        const prevPage = hasPrevPage ? page - 1 : null;
+        const nextPage = hasNextPage ? page + 1 : null;
+
+        const prevLink = hasPrevPage ? `/api/productos?page=${prevPage}&limit=${limit}` : null;
+        const nextLink = hasNextPage ? `/api/productos?page=${nextPage}&limit=${limit}` : null;
+
+        res.status(200).json({
+            status: 'success',
+            payload: products,
+            totalPages,
+            prevPage,
+            nextPage,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink,
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});

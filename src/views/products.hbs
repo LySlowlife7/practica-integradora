@@ -2,15 +2,20 @@
 <html>
 <head>
     <title>Lista de Productos</title>
-    
 </head>
 <body>
     <h1>Lista de Productos</h1>
     <ul>
         {{#each products}}
-            <li>{{this.name}} - Precio: {{this.price}} - <a href="/products/{{this.id}}">Detalles</a></li>
+            <li>
+                {{this.name}} - Precio: {{this.price}}
+                <form action="/addToCart" method="post">
+                    <input type="hidden" name="productId" value="{{this.id}}">
+                    <button type="submit">Agregar al Carrito</button>
+                </form>
+                - <a href="/products/{{this.id}}">Detalles</a>
+            </li>
         {{/each}}
     </ul>
-
-    
 </body>
+</html>

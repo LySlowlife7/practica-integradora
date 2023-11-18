@@ -1,8 +1,6 @@
-import "../config/db.js";
-import { CarritosModel } from '../modules/carritos.modules.js';
+import { CarritosModel } from "../modules/carritos.modules.js";
 
 export class CarritoDao {
-
     ID_FIELD = "_id";
     
     async createCart() {
@@ -22,31 +20,77 @@ export class CarritoDao {
             return false;
         }
     }
-    // 6254bf5bdb4015399b45c35f
-    async saveProductToCart(id, obj) {
+
+    async saveProductToCart(id, productId) {
         try {
-            const cart = await CarritosModel.findById(id)
-            cart.products.push(obj.productId);
-            cart.save();
-            return true;
+            const cart = await CarritosModel.findByIdAndUpdate(
+                id,
+                { $push: { products: productId } },
+                { new: true }
+            );
+            return cart ? true : false;
         } catch (error) {
             console.log(error);
             return false;
         }
     }
-    
+
     async deleteProductFromCart(id, productId) {
         try {
-            const cart = await CarritosModel.findById(id);
-            cart.products.remove(productId);
-            cart.save();
-            return true;
+            const cart = await CarritosModel.findByIdAndUpdate(
+                id,
+                { $pull: { products: productId } },
+                { new: true }
+            );
+            return cart ? true : false;
         } catch (error) {
             console.log(error);
             return false;
         }
     }
-    
+
+    async updateCart(id, products) {
+        try {
+            const cart = await CarritosModel.findByIdAndUpdate(
+                id,
+                { products },
+                { new: true }
+            );
+            return cart ? true : false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    async updateProductQuantity(id, productId, quantity) {
+        try {
+            const cart = await CarritosModel.findOneAndUpdate(
+                { _id: id, "products._id": productId },
+                { $set: { "products.$.quantity": quantity } },
+                { new: true }
+            );
+            return cart ? true : false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    async clearCart(id) {
+        try {
+            const cart = await CarritosModel.findByIdAndUpdate(
+                id,
+                { products: [] },
+                { new: true }
+            );
+            return cart ? true : false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     async getAllProductsFromCart(id) {
         try {
             return await CarritosModel.findById(id).populate('products').select({products: 1, _id:0});

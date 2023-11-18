@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI; // Obtener la cadena de conexión desde .env
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,

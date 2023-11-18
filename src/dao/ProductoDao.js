@@ -1,4 +1,3 @@
-import "../config/db.js";
 import { ProductosModel } from "../modules/productos.modules.js";
 
 export class ProductoDao {
@@ -19,7 +18,7 @@ export class ProductoDao {
             const sortOptions = {};
 
             if (sort) {
-                sortOptions.price = sort === 'asc' ? 1 : sort === 'desc' ? -1 : 0;
+                sortOptions.price = sort === "asc" ? 1 : sort === "desc" ? -1 : 0;
             }
 
             const products = await ProductosModel.find(query)
@@ -49,7 +48,6 @@ export class ProductoDao {
             const product = await ProductosModel.findOne({
                 [this.ID_FIELD]: objectId,
             });
-            console.log(product);
             return product;
         } catch (error) {
             console.log(error);
