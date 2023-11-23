@@ -4,8 +4,8 @@ app.get('/api/productos', async (req, res) => {
     const options = {
         limit: parseInt(limit),
         page: parseInt(page),
-        sort,
-        query,
+        sort: sort === 'asc' ? 'price' : sort === 'desc' ? '-price' : null,
+        query: query || {},
     };
 
     try {
@@ -28,6 +28,7 @@ app.get('/api/productos', async (req, res) => {
             totalPages,
             prevPage,
             nextPage,
+            page,
             hasPrevPage,
             hasNextPage,
             prevLink,

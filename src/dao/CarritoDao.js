@@ -2,7 +2,7 @@ import { CarritosModel } from "../modules/carritos.modules.js";
 
 export class CarritoDao {
     ID_FIELD = "_id";
-    
+
     async createCart() {
         try {
             return await CarritosModel.create({});
@@ -14,7 +14,7 @@ export class CarritoDao {
     
     async deleteCartById(id) {
         try {
-            return await CarritosModel.findByIdAndDelete({[this.ID_FIELD]: id})
+            return await CarritosModel.findByIdAndDelete(id);
         } catch (error) {
             console.log(error);
             return false;
@@ -93,7 +93,7 @@ export class CarritoDao {
 
     async getAllProductsFromCart(id) {
         try {
-            return await CarritosModel.findById(id).populate('products').select({products: 1, _id:0});
+            return await CarritosModel.findById(id).populate('products').select({ products: 1, _id: 0 });
         } catch (error) {
             console.log(error);
             return false;

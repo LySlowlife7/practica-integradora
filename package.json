@@ -1,7 +1,7 @@
 {
-    "name": "entrega-10",
+    "name": "entrega-login",
     "version": "1.0.0",
-    "description": "complementario backend",
+    "description": " backend",
     "author": "lycabrera",
     "main": "index.js",
     "type": "module",
